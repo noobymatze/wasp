@@ -1,13 +1,16 @@
-import { useState } from 'react'
+import {useEffect, useState} from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
-import { main } from '../../wasm/pkg/browser_bg.wasm';
-
-console.log(main(4, 5))
+import { main } from '../../wasm/pkg';
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [input, setInput] = useState("")
+    const [data, setData] = useState("");
+
+    const run = () => {
+      setData(JSON.stringify(main(input)))
+    }
 
   return (
     <>
@@ -21,9 +24,13 @@ function App() {
       </div>
       <h1>Vite + React</h1>
       <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
+          <textarea value={input} onInput={(e) => setInput(e.currentTarget.value)} />
+        <button onClick={() => run()}>
+            Run
         </button>
+          <pre>
+              {data}
+          </pre>
         <p>
           Edit <code>src/App.tsx</code> and save to test HMR
         </p>
