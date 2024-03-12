@@ -1,7 +1,6 @@
-use std::{fs, io};
-use std::path::PathBuf;
 use clap::Parser;
-use compiler::parse::Token;
+use std::path::PathBuf;
+use std::{fs, io};
 
 #[derive(Debug, Parser)]
 pub struct Cli {
@@ -21,6 +20,7 @@ enum Command {
 #[derive(Debug)]
 pub enum Error {
     Io(io::Error),
+    Json(serde_json::Error),
 }
 
 impl From<io::Error> for Error {
@@ -29,22 +29,29 @@ impl From<io::Error> for Error {
     }
 }
 
-fn main() -> Result<(), io::Error> {
+impl From<serde_json::Error> for Error {
+    fn from(value: serde_json::Error) -> Self {
+        Error::Json(value)
+    }
+}
+
+fn main() -> Result<(), Error> {
     let cli = Cli::parse();
     match cli.command {
         Command::Run { file } => {
             let file = file.unwrap_or_else(|| "main.edn".into());
-            let result = fs::read_to_string(file)?;
-            let result = compiler::parse(result.as_str());
+            let result = fs::read_to_string(&file)?;
+            let filename = file.to_str().map(|x| x.to_string());
+            let result = compiler::parse(filename, result.as_str());
             match result {
-                Ok(tokens) => {}
-                Err(errors) => {
-                    for err in errors {
-                        println!("{:?}", err);
-                    }
+                Ok(module) => {
+                    let module = serde_json::to_string(&module)?;
+                    println!("{}", module)
+                }
+                Err(err) => {
+                    println!("{:?}", err);
                 }
             }
-
         }
     }
 

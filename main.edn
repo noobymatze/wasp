@@ -1,0 +1,3 @@
+(def foo 3)
+
+(defn square (x) (* x x))

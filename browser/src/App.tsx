@@ -9,7 +9,7 @@ function App() {
     const [data, setData] = useState("");
 
     const run = () => {
-      setData(JSON.stringify(main(input)))
+      setData(JSON.stringify(main(input), null, 4))
     }
 
   return (
