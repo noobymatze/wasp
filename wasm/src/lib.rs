@@ -9,7 +9,7 @@ pub fn main(value: String) -> JsValue {
         Ok(value) => value,
         Err(error) => {
             eprintln!("Error serializing result: {:?}", error);
-            serde_wasm_bindgen::to_value(&"An error occurred during serialization")
+            serde_wasm_bindgen::to_value(&"An error.rs occurred during serialization")
                 .expect("Error handling failed")
         }
     }
