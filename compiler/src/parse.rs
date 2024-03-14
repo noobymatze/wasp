@@ -23,6 +23,7 @@ pub enum Expr {
     },
     Symbol {
         region: Region,
+        namespace: Vec<String>,
         value: String,
     },
     List {
@@ -74,7 +75,11 @@ impl<T: Iterator<Item = LexResult>> Parser<T> {
     fn expr(&mut self, token: (Region, Token)) -> Result<Expr, Error> {
         match token {
             (region, Token::Number(value)) => Ok(Expr::Number { region, value }),
-            (region, Token::Symbol(value)) => Ok(Expr::Symbol { region, value }),
+            (region, Token::Symbol(namespace, value)) => Ok(Expr::Symbol {
+                region,
+                namespace,
+                value,
+            }),
             (region, Token::LParen) => {
                 let mut expressions = vec![];
                 loop {
@@ -165,6 +170,7 @@ mod tests {
     fn sym<R: Into<Region>>(region: R, value: &str) -> Expr {
         Expr::Symbol {
             region: region.into(),
+            namespace: vec![],
             value: value.to_string(),
         }
     }

@@ -112,7 +112,16 @@ impl<T: Iterator<Item = char>> Lexer<T> {
         match result.as_str() {
             // "true" => self.emit(Token::Boolean(true)),
             // "false" => self.emit(Token::Boolean(false)),
-            _ => self.emit(Token::Symbol(result)),
+            str if str.len() > 1 && str.contains("/") => {
+                let vec: Vec<&str> = str.split("/").collect();
+                if let Some((a, b)) = vec.split_last() {
+                    self.emit(Token::Symbol(
+                        b.iter().map(|x| x.to_string()).collect(),
+                        a.to_string(),
+                    ))
+                }
+            }
+            str => self.emit(Token::Symbol(vec![], str.to_string())),
         }
 
         Ok(())
@@ -247,8 +256,8 @@ mod tests {
 
         let expected: Vec<(Region, Token)> = vec![
             ((1, 1).into(), Token::LParen),
-            ((1, 2, 4).into(), Token::Symbol("def".to_string())),
-            ((1, 6, 8).into(), Token::Symbol("foo".to_string())),
+            ((1, 2, 4).into(), Token::Symbol(vec![], "def".to_string())),
+            ((1, 6, 8).into(), Token::Symbol(vec![], "foo".to_string())),
             ((1, 10).into(), Token::Number(5.0)),
             ((1, 11).into(), Token::RParen),
         ];

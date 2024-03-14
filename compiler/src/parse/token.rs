@@ -4,7 +4,7 @@ use serde::{Deserialize, Serialize};
 pub enum Token {
     LParen,
     RParen,
-    Symbol(String),
+    Symbol(Vec<String>, String),
     Number(f64),
     Eof,
 }
