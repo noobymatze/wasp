@@ -32,6 +32,21 @@ pub enum Expr {
     },
 }
 
+impl Expr {
+    pub fn is_defn(&self) -> bool {
+        match self {
+            Expr::List { expressions, .. } => expressions
+                .first()
+                .map(|form| match form {
+                    Expr::Symbol { value, .. } => value == "defn",
+                    _ => false,
+                })
+                .unwrap_or(false),
+            _ => false,
+        }
+    }
+}
+
 // PARSING
 
 pub fn parse(filename: Option<String>, input: &str) -> Result<Module, Error> {

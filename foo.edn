@@ -1,0 +1,2 @@
+(defn square () (+ 5 5))
+(defn foo () (+ 6 8))

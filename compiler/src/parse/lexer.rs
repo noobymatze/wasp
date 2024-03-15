@@ -215,6 +215,14 @@ trait SymbolExt {
 }
 
 impl SymbolExt for char {
+    fn is_symbol_start(&self) -> bool {
+        self.is_alphabetic() || self.is_misc()
+    }
+
+    fn is_symbol(&self) -> bool {
+        self.is_alphanumeric() || self.is_misc()
+    }
+
     fn is_misc(&self) -> bool {
         *self == '*'
             || *self == '.'
@@ -232,14 +240,6 @@ impl SymbolExt for char {
             || *self == ':'
             || *self == '#'
             || *self == '+'
-    }
-
-    fn is_symbol_start(&self) -> bool {
-        self.is_alphabetic() || self.is_misc()
-    }
-
-    fn is_symbol(&self) -> bool {
-        self.is_alphanumeric() || self.is_misc()
     }
 }
 
