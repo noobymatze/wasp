@@ -112,8 +112,8 @@ impl<T: Iterator<Item = char>> Lexer<T> {
         match result.as_str() {
             // "true" => self.emit(Token::Boolean(true)),
             // "false" => self.emit(Token::Boolean(false)),
-            str if str.len() > 1 && str.contains("/") => {
-                let vec: Vec<&str> = str.split("/").collect();
+            str if str.len() > 1 && str.contains('/') => {
+                let vec: Vec<&str> = str.split('/').collect();
                 if let Some((a, b)) = vec.split_last() {
                     self.emit(Token::Symbol(
                         b.iter().map(|x| x.to_string()).collect(),

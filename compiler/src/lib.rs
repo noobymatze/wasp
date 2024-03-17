@@ -1,9 +1,5 @@
-use crate::parse::{Expr, Module};
+use crate::parse::Module;
 use parse::error;
-use wasm_encoder::{
-    CodeSection, ExportKind, ExportSection, Function, FunctionSection, Instruction, TypeSection,
-    ValType,
-};
 
 pub mod compile;
 pub mod parse;

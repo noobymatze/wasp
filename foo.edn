@@ -1,2 +1,3 @@
 (defn square () (+ 5 5))
-(defn foo () (+ 6 8))
+(defn foo () (/ (* 7 5) 2))
+(defn haha () (+ 3 4 (* 7 5) 6 7))

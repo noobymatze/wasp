@@ -70,7 +70,7 @@ fn main() -> Result<(), Error> {
             let file = file.unwrap_or_else(|| "main.edn".into());
             let result = fs::read_to_string(&file)?;
             let filename = file.to_str().map(|x| x.to_string());
-            let mut result = compiler::compile(filename, result.as_str())?;
+            let result = compiler::compile(filename, result.as_str())?;
             fs::write("program.wasm", result)?;
         }
     }
